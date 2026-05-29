@@ -1,0 +1,10 @@
+# Set PhoXi SDK search path for downstream packages.
+if(NOT PhoXi_FOUND)
+  if(DEFINED ENV{PHOXI_CONTROL_PATH} AND NOT "$ENV{PHOXI_CONTROL_PATH}" STREQUAL "")
+    set(_phoxi_vendor_path "$ENV{PHOXI_CONTROL_PATH}")
+  else()
+    set(_phoxi_vendor_path "@PHOXI_INSTALL_PATH@")
+  endif()
+  list(PREPEND CMAKE_PREFIX_PATH "${_phoxi_vendor_path}")
+  set(PhoXi_DIR "${_phoxi_vendor_path}" CACHE PATH "Path to PhoXi SDK")
+endif()

@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.22)
 project(phoxi_camera)
 
-set(CMAKE_PREFIX_PATH $ENV{PHOXI_CONTROL_PATH} ${CMAKE_PREFIX_PATH})
+if(DEFINED ENV{PHOXI_CONTROL_PATH} AND NOT "$ENV{PHOXI_CONTROL_PATH}" STREQUAL "")
+  set(_phoxi_path "$ENV{PHOXI_CONTROL_PATH}")
+elseif(DEFINED PhoXi_DIR)
+  set(_phoxi_path "${PhoXi_DIR}")
+else()
+  file(GLOB _phoxi_candidates "/opt/Photoneo/PhoXiControl-*")
+  list(SORT _phoxi_candidates COMPARE NATURAL ORDER DESCENDING)
+  list(GET _phoxi_candidates 0 _phoxi_path)
+endif()
+
+list(PREPEND CMAKE_PREFIX_PATH "${_phoxi_path}")
 
 find_package(ament_cmake REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
